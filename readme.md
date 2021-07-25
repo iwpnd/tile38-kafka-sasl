@@ -1,6 +1,6 @@
 # tile38-kafka-sasl
 
-Test SASL authentification between Tile38 1.25.0 and Apache Kafka.
+Test SASL authentification (SCRAM-SHA-512) between Tile38 1.25.0 and Apache Kafka.
 
 ## Prerequisites
 
