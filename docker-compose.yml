@@ -2,7 +2,7 @@ version: "2"
 
 services:
   tile38:
-    image: tile38/tile38:1.25.0
+    image: tile38/tile38:1.25.2
     container_name: tile38
     ports:
       - 9851:9851
@@ -11,6 +11,7 @@ services:
     environment:
         KAFKA_USERNAME: "admin"
         KAFKA_PASSWORD: "password"
+
   zookeeper:
     image: confluentinc/cp-zookeeper:6.0.1
     hostname: zookeeper
