@@ -1,16 +1,48 @@
 version: "2"
 
 services:
-  tile38:
-    image: tile38/tile38:1.25.2
-    container_name: tile38
+  tile38-leader:
+    image: tile38/tile38:1.25.3
+    container_name: tile38-leader
     ports:
       - 9851:9851
     command: >
-        /bin/sh -c 'tile38-server --metrics-addr=tile38:4321 -vv'
+        /bin/sh -c 'tile38-server --metrics-addr=tile38-leader:4321 -vv'
     environment:
         KAFKA_USERNAME: "admin"
         KAFKA_PASSWORD: "password"
+
+  tile38-follower1:
+    image: tile38/tile38:1.25.3
+    container_name: tile38-follower1
+    command: >
+      /bin/sh -c 'mkdir -p tmp/data && \
+                  echo "{\"follow_host\": \"tile38-leader\",\"follow_port\":9851}" > tmp/data/config
+                  tile38-server -d tmp/data -vv -p 9852'
+    ports:
+      - 9852:9852
+
+  tile38-follower2:
+    image: tile38/tile38:1.25.3
+    container_name: tile38-follower2
+    command: >
+      /bin/sh -c 'mkdir -p tmp/data && \
+                  echo "{\"follow_host\": \"tile38-leader\",\"follow_port\":9851}" > tmp/data/config
+                  tile38-server -d tmp/data -vv -p 9853'
+    ports:
+      - 9853:9853
+
+
+  tile38-follower3:
+    image: tile38/tile38:1.25.3
+    container_name: tile38-follower3
+    command: >
+      /bin/sh -c 'mkdir -p tmp/data && \
+                  echo "{\"follow_host\": \"tile38-leader\",\"follow_port\":9851}" > tmp/data/config
+                  tile38-server -d tmp/data -vv -p 9854'
+    ports:
+      - 9854:9854
+
 
   zookeeper:
     image: confluentinc/cp-zookeeper:6.0.1
