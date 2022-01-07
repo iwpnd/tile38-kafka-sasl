@@ -2,12 +2,14 @@ version: "2"
 
 services:
   tile38:
-    image: tile38/tile38:1.25.2
+    image: tile38/tile38:1.27.1
     container_name: tile38
     ports:
       - 9851:9851
     command: >
-        /bin/sh -c 'tile38-server --metrics-addr=tile38:4321 -vv'
+      /bin/sh -c 'mkdir -p tmp/data && \
+                  echo "{\"logconfig\":{\"level\":\"debug\",\"encoding\":\"json\",\"outputPaths\":[\"stdout\"],\"errorOutputPaths\":[\"stderr\"],\"encoderConfig\": {\"messageKey\":\"message\",\"levelKey\":\"level\",\"levelEncoder\":\"lowercase\", \"timeKey\":\"timestamp\",\"timeEncoder\":\"ISO8601\"}}}"> tmp/data/config
+                  tile38-server -d tmp/data -vv -p 9851 -l json'
     environment:
         KAFKA_USERNAME: "admin"
         KAFKA_PASSWORD: "password"
